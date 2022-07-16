@@ -5,11 +5,11 @@ coverage/*
 **/windows/*
 .vscode/*
 
-examples/*/build/*
-examples/*/android/*
-examples/*/.metadata
-examples/*/*.iml
-examples/*/.packages
-examples/*/analysis_options.yaml
-examples/*/test/
-examples/*/README.md
+example/*/build/*
+example/*/android/*
+example/*/.metadata
+example/*/*.iml
+example/*/.packages
+example/*/analysis_options.yaml
+example/*/test/
+example/*/README.md

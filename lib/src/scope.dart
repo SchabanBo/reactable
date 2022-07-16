@@ -3,11 +3,20 @@ import 'package:flutter/widgets.dart';
 import '../reactable.dart';
 import 'context.dart';
 
+/// A condition that can be used to determine if a [Reactable] should be
+/// updated.
 typedef Where = bool Function();
 
+/// Set this to true to enable debug logging for all scopes in the project.
+/// Or set the [Scope.debug] property to true to enable debug logging for a
+/// specific scope.
 bool debugReactable = false;
+
+/// Set this to true to throw an exception when a scope does not have a
+/// [Reactable] associated with it.
 bool reactableThrowOnError = true;
 
+/// The base class for the scope that contains the main properties.
 @visibleForTesting
 abstract class BaseScope extends StatelessWidget {
   static final _locationRegex = RegExp(r'[a-zA-z]+.dart.{3}');

@@ -1,6 +1,7 @@
 name: reactable
-description: light yet powerful reactive state management package
-version: 0.0.1
+description: light yet powerful reactive state management package. auto register widget to update when values change in it.
+repository: https://github.com/SchabanBo/reactable
+version: 0.1.0
 
 environment:
   sdk: '>=2.16.0 <3.0.0'

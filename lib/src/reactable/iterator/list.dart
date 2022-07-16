@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import '../core.dart';
 
+/// The main implementation of the reactable list.
 class ReactableList<E> extends ReactableValueNotifier<List<E>>
     with ListMixin<E>, ReactableBase<List<E>> {
   ReactableList([List<E> initial = const []]) : super(initial);
@@ -111,6 +112,8 @@ class ReactableList<E> extends ReactableValueNotifier<List<E>>
   Iterable<T> whereType<T>() => value.whereType<T>();
 }
 
+/// An extension to convert a list to a reactable list.
 extension ListExtension<E> on List<E> {
+  /// Convert this list to reactable list.
   ReactableList<E> get asReactable => ReactableList<E>(this);
 }

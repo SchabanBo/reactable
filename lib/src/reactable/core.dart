@@ -99,6 +99,7 @@ mixin ReactableBase<T> on ReactableValueNotifier<T> {
   int get hashCode => value.hashCode;
 }
 
+/// The main implementation of the reactable object.
 class Reactable<T> extends ReactableValueNotifier<T> with ReactableBase<T> {
   Reactable(T initial) : super(initial);
 
@@ -107,7 +108,8 @@ class Reactable<T> extends ReactableValueNotifier<T> with ReactableBase<T> {
   }
 }
 
+/// An extension to convert an object to a reactable.
 extension ObjectExtension<T> on T {
-  /// Convert this object to an observable.
+  /// Convert this object to an reactable.
   Reactable<T> get asReactable => Reactable<T>(this);
 }

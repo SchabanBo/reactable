@@ -1,6 +1,6 @@
-# Reactable
-
 ![logo](./assets/Name.jpg)
+
+[![likes](https://badges.bar/reactable/likes)](https://pub.dev/packages/reactable) [![popularity](https://badges.bar/reactable/popularity)](https://pub.dev/packages/reactable) [![pub points](https://badges.bar/reactable/pub%20points)](https://pub.dev/packages/reactable) [![codecov](https://codecov.io/gh/SchabanBo/reactable/branch/main/graph/badge.svg?token=LxDyOPFg4o)](https://codecov.io/gh/SchabanBo/reactable)
 
 This is a flutter reactive state management library that automatically updates the UI when values change .It is easy, light, fast.
 It has tow main parts:
