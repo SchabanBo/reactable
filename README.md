@@ -3,7 +3,7 @@
 [![likes](https://badges.bar/reactable/likes)](https://pub.dev/packages/reactable) [![popularity](https://badges.bar/reactable/popularity)](https://pub.dev/packages/reactable) [![pub points](https://badges.bar/reactable/pub%20points)](https://pub.dev/packages/reactable) [![codecov](https://codecov.io/gh/SchabanBo/reactable/branch/main/graph/badge.svg?token=LxDyOPFg4o)](https://codecov.io/gh/SchabanBo/reactable)
 
 This is a flutter reactive state management library that automatically updates the UI when values change .It is easy, light, fast.
-It has tow main parts:
+It has two main parts:
 
 - Reactable: The value holder, the value could be any of any type.
 - Scope: The pieces of code the should be updated whenever a reactable in this code has been changed.
@@ -12,7 +12,7 @@ in a simple way the scope will be updated every time the reactable in the builde
 
 ## Reactable
 
-To create a reactable you have tow ways
+To create a reactable you have two ways
 
 ```dart
 var counter = 0.asReactable;
@@ -48,6 +48,6 @@ Scope(
 )
 ```
 more options:
-- If you want to read a reactable without registering a listener in a scop for this reactable use `counter.read`.
+- If you want to read a reactable without registering a listener in a scope for this reactable, use `counter.read`.
 - If want to see more information of what is happening in the scope, you can use the [debug] parameter.
 - by default the scope will throw an error if no reactable is within it. you can change this behavior with the [throwOnError] parameter.
