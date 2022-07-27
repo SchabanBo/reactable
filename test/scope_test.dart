@@ -103,7 +103,7 @@ void main() {
     expect(find.text('counter:1'), findsNWidgets(2)); // counter is updated
   });
 
-  test('observable disposed throws error', () {
+  test('scope disposed throws error', () {
     expect(() {
       final counter = 0.asReactable;
       counter.dispose();
@@ -145,7 +145,7 @@ void main() {
 #1      getScopeName (package:reactable/src/scope.dart:14:21)
 #2      new _BaseScope (package:reactable/src/scope.dart:22:16)
 #3      new Scope (package:reactable/src/scope.dart:124:8)
-#4      AutoSaveSection.build (package:qlevar_local_manager/pages/settings/views/auto_save_section.dart:18:11)
+#4      AutoSaveSection.build (package:test/pages/settings/views/auto_save_section.dart:18:11)
 #5      StatelessElement.build (package:flutter/src/widgets/framework.dart:4879:49)
 #6      ComponentElement.performRebuild (package:flutter/src/widgets/framework.dart:4809:15)
 #7      Element.rebuild (package:flutter/src/widgets/framework.dart:4536:5)
@@ -168,8 +168,8 @@ packages/reactable/src/scope.dart 14:21                                         
 packages/reactable/src/scope.dart 14:21                                                                   getScopeName
 packages/reactable/src/scope.dart 22:16                                                                   new
 packages/reactable/src/scope.dart 124:8                                                                   new
-packages/qlevar_local_manager/pages/main/local_node/widget.dart 80:26                                             get header
-packages/qlevar_local_manager/pages/main/local_node/widget.dart 55:59                                             <fn>
+packages/test/pages/main/local_node/widget.dart 80:26                                             get header
+packages/test/pages/main/local_node/widget.dart 55:59                                             <fn>
 packages/reactable/src/scope.dart 129:48                                                                  build
 packages/flutter/src/widgets/framework.dart 4879:22                                                               build
 packages/reactable/src/context.dart 30:24                                                                    observe
