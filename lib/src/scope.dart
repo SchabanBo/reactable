@@ -185,3 +185,14 @@ class Scope extends BaseScope {
   @override
   Widget build(BuildContext context) => builder(context);
 }
+
+abstract class ScopedView extends StatelessWidget {
+  const ScopedView({Key? key}) : super(key: key);
+
+  Widget builder(BuildContext context);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scope(builder: builder);
+  }
+}
