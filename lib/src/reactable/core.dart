@@ -61,6 +61,13 @@ class ReactableValueNotifier<T> extends ReactableNotifier
   /// without registering a listener.
   T get read => _value;
 
+  /// Silently write the value of this reactable
+  /// without triggering any listener.
+  T write(T val) {
+    _value = val;
+    return _value;
+  }
+
   @override
   String toString() {
     reactableContext.reading(this);

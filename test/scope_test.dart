@@ -103,6 +103,26 @@ void main() {
     expect(find.text('counter:1'), findsNWidgets(2)); // counter is updated
   });
 
+  testWidgets("scope with write dose not update", (tester) async {
+    final counter = 0.asReactable;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Text('counter:$counter'),
+        ),
+      ),
+    );
+
+    expect(find.text('counter:0'), findsOneWidget);
+
+    counter.write(1);
+    await tester.pump();
+
+    expect(counter.value, 1);
+    expect(find.text('counter:0'), findsOneWidget);
+    expect(find.text('counter:1'), findsNothing);
+  });
+
   test('scope disposed throws error', () {
     expect(() {
       final counter = 0.asReactable;
@@ -177,4 +197,31 @@ packages/reactable/src/context.dart 30:24                                       
       'Scope in widget.dart 80',
     );
   });
+
+  testWidgets("scopeView update", (tester) async {
+    final counter = 0.asReactable;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: _TestScopedView(counter),
+        ),
+      ),
+    );
+
+    expect(find.text('counter:0'), findsOneWidget);
+
+    counter.value = 1;
+    await tester.pump();
+    expect(find.text('counter:1'), findsOneWidget); // counter is updated
+  });
+}
+
+class _TestScopedView extends ScopedView {
+  final Reactable<int> counter;
+  const _TestScopedView(this.counter, {Key? key}) : super(key: key);
+
+  @override
+  Widget builder(BuildContext context) {
+    return Text('counter:$counter');
+  }
 }

@@ -1,8 +1,11 @@
 ![logo](./assets/Name.jpg)
 
-[![likes](https://badges.bar/reactable/likes)](https://pub.dev/packages/reactable) [![popularity](https://badges.bar/reactable/popularity)](https://pub.dev/packages/reactable) [![pub points](https://badges.bar/reactable/pub%20points)](https://pub.dev/packages/reactable) [![codecov](https://codecov.io/gh/SchabanBo/reactable/branch/master/graph/badge.svg?token=LxDyOPFg4o)](https://codecov.io/gh/SchabanBo/reactable)
+[![likes](https://img.shields.io/pub/likes/reactable?logo=dart)](https://pub.dev/packages/reactable)
+[![popularity](https://img.shields.io/pub/popularity/reactable?logo=dart)](https://pub.dev/packages/reactable)
+[![pub points](https://img.shields.io/pub/points/reactable?logo=dart)](https://pub.dev/packages/reactable) 
+[![codecov](https://codecov.io/gh/SchabanBo/reactable/branch/master/graph/badge.svg?token=LxDyOPFg4o)](https://codecov.io/gh/SchabanBo/reactable)
 
-This is a flutter reactive state management library that automatically updates the UI when values change .It is easy, light, fast.
+This is a flutter reactive state management library that automatically updates the UI when values of an reactable objects change .It is easy, light, fast and well tested.
 It has two main parts:
 
 - Reactable: The value holder, the value could be any of any type.
