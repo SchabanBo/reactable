@@ -7,6 +7,18 @@ import 'reactable/core.dart';
 final reactableContext = _ScopeContextImpl._();
 
 class _ScopeContextImpl {
+  /// Set this to true to enable debug logging for all scopes in the project.
+  /// Or set the [Scope.debug] property to true to enable debug logging for a
+  /// specific scope.
+  bool debugReactable = false;
+
+  /// Auto dispose reactable whenever there is no scope using it.
+  bool autoDispose = false;
+
+  /// Set this to true to throw an exception when a scope does not have a
+  /// [Reactable] associated with it.
+  bool reactableThrowOnError = true;
+
   final List<ScopeData> _dataList = [];
 
   _ScopeContextImpl._();
@@ -14,11 +26,11 @@ class _ScopeContextImpl {
   void reading(ReactableNotifier reactable) {
     if (_dataList.isEmpty) return;
 
-    final updater = _dataList.last.updater;
-    if (!reactable.containsListener(updater)) {
-      reactable.addListener(updater);
+    final data = _dataList.last;
+    if (!reactable.containsListener(data.updater)) {
+      reactable.addListener(data.updater);
       _dataList.last.disposers.add(() {
-        reactable.removeListener(updater);
+        reactable.detach(data);
       });
       if (_dataList.last.debug) {
         reactableContext.log(
@@ -52,15 +64,10 @@ class ScopeData {
   final List<VoidCallback> disposers;
   final bool debug;
   final bool throwOnError;
+  final bool autoDispose;
 
-  const ScopeData(
-    this.name,
-    this.updater,
-    this.builder,
-    this.disposers,
-    this.debug,
-    this.throwOnError,
-  );
+  const ScopeData(this.name, this.updater, this.builder, this.disposers,
+      this.debug, this.throwOnError, this.autoDispose);
 }
 
 class ScopeError {
@@ -72,7 +79,7 @@ class ScopeError {
   String toString() {
     var message = '''
       No Reactable was found in the builder method of a scope.
-      Make sure you are using any reactables in the builder method.
+      Make sure you are using any reactable in the builder method.
       $name
       ''';
 

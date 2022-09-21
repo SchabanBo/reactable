@@ -5,6 +5,7 @@ import '../context.dart';
 class ReactableNotifier extends Listenable {
   bool _isDisposed = false;
   final _listeners = <VoidCallback>[];
+  final _disposers = <VoidCallback>[];
 
   @override
   void addListener(VoidCallback listener) {
@@ -16,6 +17,16 @@ class ReactableNotifier extends Listenable {
   void removeListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
     _listeners.remove(listener);
+  }
+
+  void addDisposer(VoidCallback listener) {
+    assert(_debugAssertNotDisposed());
+    _disposers.add(listener);
+  }
+
+  void removeDisposer(VoidCallback listener) {
+    assert(_debugAssertNotDisposed());
+    _disposers.remove(listener);
   }
 
   bool containsListener(VoidCallback listener) => _listeners.contains(listener);
@@ -36,6 +47,10 @@ class ReactableNotifier extends Listenable {
   void dispose() {
     assert(_debugAssertNotDisposed());
     _listeners.clear();
+    for (var disposer in _disposers) {
+      disposer();
+    }
+    _disposers.clear();
     _isDisposed = true;
   }
 
@@ -48,6 +63,13 @@ class ReactableNotifier extends Listenable {
       return true;
     }());
     return true;
+  }
+
+  void detach(ScopeData data) {
+    assert(_debugAssertNotDisposed());
+    removeListener(data.updater);
+    if (_listeners.isNotEmpty) return;
+    if (data.autoDispose) dispose();
   }
 }
 
