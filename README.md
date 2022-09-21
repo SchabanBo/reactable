@@ -50,7 +50,34 @@ Scope(
     ),
 )
 ```
-more options:
-- If you want to read a reactable without registering a listener in a scope for this reactable, use `counter.read`.
-- If want to see more information of what is happening in the scope, you can use the [debug] parameter.
-- by default the scope will throw an error if no reactable is within it. you can change this behavior with the [throwOnError] parameter.
+
+## More features
+
+### Reactable.read
+
+If you want to read a reactable without registering a listener in a scope for this reactable.
+
+### Reactable.write
+
+If you want to change a reactable value without notifying the listeners
+
+### Scope.where
+
+Set a condition on when should this scope be updated.
+
+### Scope.debug
+
+If want to see more information of what is happening in the scope, set this value to true. Or set it true for the all scopes be *reactableContext.debugReactable*
+
+## Scope.throwOnError
+
+by default the scope will throw an error if no reactable is within it. you can change this behavior with the [throwOnError] parameter. Or set it false for the all scopes be *reactableContext.reactableThrowOnError*
+
+## Scope.autoDispose
+
+if this value is true, the reactable in the scope will be disposed after removing the widget from the screen and there is no other scopes that are using this reactable.
+
+**NOTE:** if a reactable is disposed it cannot be used again.
+
+By default this is false, you can set it true for the all scopes be *reactableContext.autoDispose*
+

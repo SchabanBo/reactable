@@ -63,7 +63,7 @@ void main() {
   testWidgets(
       'scope without reactable dose not throws error when throwError is false',
       (tester) async {
-    reactableThrowOnError = false;
+    reactableContext.reactableThrowOnError = false;
     await tester.pumpWidget(MaterialApp(
       home: Scope(
         builder: (_) => const Text('Hello'),
@@ -71,7 +71,7 @@ void main() {
     ));
 
     expect(find.text('Hello'), findsOneWidget);
-    reactableThrowOnError = true;
+    reactableContext.reactableThrowOnError = true;
   });
 
   testWidgets("scope with read dose not update", (tester) async {
@@ -123,6 +123,51 @@ void main() {
     expect(find.text('counter:1'), findsNothing);
   });
 
+  testWidgets("scope where condition", (tester) async {
+    final counter = 0.asReactable;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Column(
+            children: [
+              Scope(
+                where: () => counter.value % 2 == 0,
+                debug: true,
+                builder: (context) => Text('counter: $counter'),
+              ),
+              TextButton(
+                child: const Text("+"),
+                onPressed: () => counter.value++,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('counter: 0'), findsOneWidget);
+
+    await tester.tap(find.text('+'));
+    await tester.pump();
+    expect(counter.value, 1);
+    expect(find.text('counter: 0'), findsOneWidget);
+
+    counter.value = 2;
+    await tester.pump();
+    expect(counter.value, 2);
+    expect(find.text('counter: 2'), findsOneWidget);
+  });
+
+  testWidgets('scope without reactable', (tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: Scope(
+        builder: (_) => const Text('Hello'),
+      ),
+    ));
+
+    expect(tester.takeException(), isA<ScopeError>());
+  });
+
   test('scope disposed throws error', () {
     expect(() {
       final counter = 0.asReactable;
@@ -132,7 +177,7 @@ void main() {
   });
 
   testWidgets("scoped value", (tester) async {
-    debugReactable = true;
+    reactableContext.debugReactable = true;
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(

@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.1.2] 21-09-2022
+
+- add auto dispose.
+
 ## [0.1.1] 19-09-2022
 
 - Add reactable.read and reactable.write to change the value silently.

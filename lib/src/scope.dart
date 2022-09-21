@@ -7,15 +7,6 @@ import 'context.dart';
 /// updated.
 typedef Where = bool Function();
 
-/// Set this to true to enable debug logging for all scopes in the project.
-/// Or set the [Scope.debug] property to true to enable debug logging for a
-/// specific scope.
-bool debugReactable = false;
-
-/// Set this to true to throw an exception when a scope does not have a
-/// [Reactable] associated with it.
-bool reactableThrowOnError = true;
-
 /// The base class for the scope that contains the main properties.
 @visibleForTesting
 abstract class BaseScope extends StatelessWidget {
@@ -25,11 +16,13 @@ abstract class BaseScope extends StatelessWidget {
   final Where? where;
   final bool? debug;
   final bool? throwOnError;
+  final bool? autoDispose;
 
   BaseScope({
     this.where,
     this.debug,
     this.throwOnError,
+    this.autoDispose,
     Key? key,
   })  : name = getScopeName(),
         super(key: key);
@@ -74,7 +67,7 @@ class _ScopeElement extends StatelessElement {
 
   void widgetUpdater() {
     final where = scope.where?.call() ?? true;
-    final debug = scope.debug ?? debugReactable;
+    final debug = scope.debug ?? reactableContext.debugReactable;
     if (_isDisposed || dirty || !where) {
       if (debug) {
         reactableContext.log(
@@ -97,8 +90,9 @@ class _ScopeElement extends StatelessElement {
         widgetUpdater,
         super.build,
         disposers,
-        scope.debug ?? debugReactable,
-        scope.throwOnError ?? reactableThrowOnError,
+        scope.debug ?? reactableContext.debugReactable,
+        scope.throwOnError ?? reactableContext.reactableThrowOnError,
+        scope.autoDispose ?? reactableContext.autoDispose,
       ),
     );
   }
@@ -127,6 +121,7 @@ class ScopedValue<T> extends BaseScope {
     required this.builder,
     bool? debug,
     bool? throwOnError,
+    bool? autoDispose,
     Where? condition,
     Key? key,
   })  : data = Reactable(initData),
@@ -134,6 +129,7 @@ class ScopedValue<T> extends BaseScope {
           where: condition,
           key: key,
           debug: debug,
+          autoDispose: autoDispose,
           throwOnError: throwOnError,
         );
 
@@ -171,6 +167,7 @@ class Scope extends BaseScope {
     required this.builder,
     Where? where,
     bool? debug,
+    bool? autoDispose,
     bool? throwOnError,
     Key? key,
   }) : super(
@@ -178,6 +175,7 @@ class Scope extends BaseScope {
           where: where,
           debug: debug,
           throwOnError: throwOnError,
+          autoDispose: autoDispose,
         );
 
   final WidgetBuilder builder;
