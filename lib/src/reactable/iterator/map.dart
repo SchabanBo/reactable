@@ -5,7 +5,8 @@ import '../core.dart';
 /// The main implementation of the reactable map.
 class ReactableMap<K, V> extends ReactableValueNotifier<Map<K, V>>
     with MapMixin<K, V>, ReactableBase<Map<K, V>> {
-  ReactableMap([Map<K, V> initial = const {}]) : super(initial);
+  ReactableMap([Map<K, V> initial = const {}, bool canBeAutoDisposed = true])
+      : super(initial, canBeAutoDisposed);
 
   @override
   V? operator [](Object? key) {

@@ -79,5 +79,5 @@ if this value is true, the reactable in the scope will be disposed after removin
 
 **NOTE:** if a reactable is disposed it cannot be used again.
 
-By default this is false, you can set it true for the all scopes be *reactableContext.autoDispose*
+By default this is true, you can set it false for the all scopes be *reactableContext.autoDispose*
 

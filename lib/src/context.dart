@@ -13,7 +13,7 @@ class _ScopeContextImpl {
   bool debugReactable = false;
 
   /// Auto dispose reactable whenever there is no scope using it.
-  bool autoDispose = false;
+  bool autoDispose = true;
 
   /// Set this to true to throw an exception when a scope does not have a
   /// [Reactable] associated with it.
