@@ -28,7 +28,7 @@ class _ScopeContextImpl {
 
     final data = _dataList.last;
     if (!reactable.containsListener(data.updater)) {
-      reactable.addListener(data.updater);
+      reactable.registerScope(data.updater);
       _dataList.last.disposers.add(() {
         reactable.detach(data);
       });

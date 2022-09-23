@@ -9,18 +9,23 @@ class ReactableNotifier extends Listenable {
 
   final _disposers = <VoidCallback>[];
   bool _isDisposed = false;
-  final _listeners = <VoidCallback>[];
+  final _listeners = <_Listeners>[];
 
   @override
   void addListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.add(listener);
+    _listeners.add(_Listeners(action: listener));
   }
 
   @override
   void removeListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.remove(listener);
+    _listeners.removeWhere((l) => l.action == listener);
+  }
+
+  void registerScope(VoidCallback listener) {
+    assert(_debugAssertNotDisposed());
+    _listeners.add(_Listeners(action: listener, isFromScope: true));
   }
 
   void addDisposer(VoidCallback listener) {
@@ -33,7 +38,8 @@ class ReactableNotifier extends Listenable {
     _disposers.remove(listener);
   }
 
-  bool containsListener(VoidCallback listener) => _listeners.contains(listener);
+  bool containsListener(VoidCallback listener) =>
+      _listeners.any((l) => l.action == listener);
 
   void refresh() {
     notifyListeners();
@@ -61,7 +67,7 @@ class ReactableNotifier extends Listenable {
   void detach(ScopeData data) {
     assert(_debugAssertNotDisposed());
     removeListener(data.updater);
-    if (_listeners.isNotEmpty) return;
+    if (_listeners.any((e) => e.isFromScope)) return;
     if (data.autoDispose && canBeAutoDisposed) dispose();
   }
 
@@ -143,6 +149,8 @@ class Reactable<T> extends ReactableValueNotifier<T> with ReactableBase<T> {
     value = fn(value);
   }
 
+  /// Register this VoidCallBack for all the given reactable. and register
+  /// the VoidCallBack to be removed when the reactable is no longer is used.
   static void listenTo(List<Reactable> reactables, VoidCallback callback) {
     for (var reactable in reactables) {
       reactable.addListener(callback);
@@ -157,4 +165,16 @@ class Reactable<T> extends ReactableValueNotifier<T> with ReactableBase<T> {
 extension ObjectExtension<T> on T {
   /// Convert this object to an reactable.
   Reactable<T> get asReactable => Reactable<T>(this);
+}
+
+class _Listeners {
+  _Listeners({
+    required this.action,
+    this.isFromScope = false,
+  });
+
+  final VoidCallback action;
+  final bool isFromScope;
+
+  void call() => action();
 }
