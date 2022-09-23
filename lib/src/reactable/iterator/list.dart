@@ -5,7 +5,8 @@ import '../core.dart';
 /// The main implementation of the reactable list.
 class ReactableList<E> extends ReactableValueNotifier<List<E>>
     with ListMixin<E>, ReactableBase<List<E>> {
-  ReactableList([List<E> initial = const []]) : super(initial);
+  ReactableList([List<E> initial = const [], bool canBeAutoDisposed = true])
+      : super(initial, canBeAutoDisposed);
 
   @override
   ReactableList<E> operator +(Iterable<E> other) {

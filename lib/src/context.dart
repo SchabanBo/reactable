@@ -13,7 +13,7 @@ class _ScopeContextImpl {
   bool debugReactable = false;
 
   /// Auto dispose reactable whenever there is no scope using it.
-  bool autoDispose = false;
+  bool autoDispose = true;
 
   /// Set this to true to throw an exception when a scope does not have a
   /// [Reactable] associated with it.
@@ -28,7 +28,7 @@ class _ScopeContextImpl {
 
     final data = _dataList.last;
     if (!reactable.containsListener(data.updater)) {
-      reactable.addListener(data.updater);
+      reactable.registerScope(data.updater);
       _dataList.last.disposers.add(() {
         reactable.detach(data);
       });

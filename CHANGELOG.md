@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [0.1.3] 23-09-2022
+
+- add Reactable.listenTo
+- Add Reactable.canBeAutoDisposed.
+- Set autoDispose to true as default.
+
 ## [0.1.2] 21-09-2022
 
 - add auto dispose.

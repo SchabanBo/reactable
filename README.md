@@ -61,6 +61,14 @@ If you want to read a reactable without registering a listener in a scope for th
 
 If you want to change a reactable value without notifying the listeners
 
+### Reactable.canBeAutoDisposed
+
+If this false then no scope can dispose this reactable when [Scope.autoDispose](#scopeautodispose) is enabled.
+
+### Reactable.listenTo
+
+This method takes a list of reactable and a VoidCallBack and register this VoidCallBack for all the given reactable. and register the VoidCallBack to be removed when the reactable is no longer being used.
+
 ### Scope.where
 
 Set a condition on when should this scope be updated.
@@ -69,15 +77,15 @@ Set a condition on when should this scope be updated.
 
 If want to see more information of what is happening in the scope, set this value to true. Or set it true for the all scopes be *reactableContext.debugReactable*
 
-## Scope.throwOnError
+### Scope.throwOnError
 
 by default the scope will throw an error if no reactable is within it. you can change this behavior with the [throwOnError] parameter. Or set it false for the all scopes be *reactableContext.reactableThrowOnError*
 
-## Scope.autoDispose
+### Scope.autoDispose
 
 if this value is true, the reactable in the scope will be disposed after removing the widget from the screen and there is no other scopes that are using this reactable.
 
 **NOTE:** if a reactable is disposed it cannot be used again.
 
-By default this is false, you can set it true for the all scopes be *reactableContext.autoDispose*
+By default this is true, you can set it false for the all scopes be *reactableContext.autoDispose*
 

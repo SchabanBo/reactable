@@ -3,20 +3,29 @@ import 'package:flutter/foundation.dart';
 import '../context.dart';
 
 class ReactableNotifier extends Listenable {
-  bool _isDisposed = false;
-  final _listeners = <VoidCallback>[];
+  ReactableNotifier(this.canBeAutoDisposed);
+
+  final bool canBeAutoDisposed;
+
   final _disposers = <VoidCallback>[];
+  bool _isDisposed = false;
+  final _listeners = <_Listeners>[];
 
   @override
   void addListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.add(listener);
+    _listeners.add(_Listeners(action: listener));
   }
 
   @override
   void removeListener(VoidCallback listener) {
     assert(_debugAssertNotDisposed());
-    _listeners.remove(listener);
+    _listeners.removeWhere((l) => l.action == listener);
+  }
+
+  void registerScope(VoidCallback listener) {
+    assert(_debugAssertNotDisposed());
+    _listeners.add(_Listeners(action: listener, isFromScope: true));
   }
 
   void addDisposer(VoidCallback listener) {
@@ -29,7 +38,8 @@ class ReactableNotifier extends Listenable {
     _disposers.remove(listener);
   }
 
-  bool containsListener(VoidCallback listener) => _listeners.contains(listener);
+  bool containsListener(VoidCallback listener) =>
+      _listeners.any((l) => l.action == listener);
 
   void refresh() {
     notifyListeners();
@@ -54,6 +64,13 @@ class ReactableNotifier extends Listenable {
     _isDisposed = true;
   }
 
+  void detach(ScopeData data) {
+    assert(_debugAssertNotDisposed());
+    removeListener(data.updater);
+    if (_listeners.any((e) => e.isFromScope)) return;
+    if (data.autoDispose && canBeAutoDisposed) dispose();
+  }
+
   bool _debugAssertNotDisposed() {
     assert(() {
       if (_isDisposed) {
@@ -64,31 +81,15 @@ class ReactableNotifier extends Listenable {
     }());
     return true;
   }
-
-  void detach(ScopeData data) {
-    assert(_debugAssertNotDisposed());
-    removeListener(data.updater);
-    if (_listeners.isNotEmpty) return;
-    if (data.autoDispose) dispose();
-  }
 }
 
 class ReactableValueNotifier<T> extends ReactableNotifier
     implements ValueListenable<T> {
-  ReactableValueNotifier(T val) : _value = val;
+  ReactableValueNotifier(T val, bool canBeAutoDisposed)
+      : _value = val,
+        super(canBeAutoDisposed);
 
   T _value;
-
-  /// Silently read the value of this reactable
-  /// without registering a listener.
-  T get read => _value;
-
-  /// Silently write the value of this reactable
-  /// without triggering any listener.
-  T write(T val) {
-    _value = val;
-    return _value;
-  }
 
   @override
   String toString() {
@@ -99,6 +100,17 @@ class ReactableValueNotifier<T> extends ReactableNotifier
   @override
   T get value {
     reactableContext.reading(this);
+    return _value;
+  }
+
+  /// Silently read the value of this reactable
+  /// without registering a listener.
+  T get read => _value;
+
+  /// Silently write the value of this reactable
+  /// without triggering any listener.
+  T write(T val) {
+    _value = val;
     return _value;
   }
 
@@ -130,10 +142,22 @@ mixin ReactableBase<T> on ReactableValueNotifier<T> {
 
 /// The main implementation of the reactable object.
 class Reactable<T> extends ReactableValueNotifier<T> with ReactableBase<T> {
-  Reactable(T initial) : super(initial);
+  Reactable(T initial, {bool canBeAutoDisposed = true})
+      : super(initial, canBeAutoDisposed);
 
   void update(T Function(T? val) fn) {
     value = fn(value);
+  }
+
+  /// Register this VoidCallBack for all the given reactable. and register
+  /// the VoidCallBack to be removed when the reactable is no longer is used.
+  static void listenTo(List<Reactable> reactables, VoidCallback callback) {
+    for (var reactable in reactables) {
+      reactable.addListener(callback);
+      reactable.addDisposer(() {
+        reactable.removeListener(callback);
+      });
+    }
   }
 }
 
@@ -141,4 +165,16 @@ class Reactable<T> extends ReactableValueNotifier<T> with ReactableBase<T> {
 extension ObjectExtension<T> on T {
   /// Convert this object to an reactable.
   Reactable<T> get asReactable => Reactable<T>(this);
+}
+
+class _Listeners {
+  _Listeners({
+    required this.action,
+    this.isFromScope = false,
+  });
+
+  final VoidCallback action;
+  final bool isFromScope;
+
+  void call() => action();
 }

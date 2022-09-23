@@ -1,7 +1,7 @@
 name: reactable
 description: a reactive state management library that automatically updates the UI when values of an reactable objects change .It is easy, light, fast and well tested.
 repository: https://github.com/SchabanBo/reactable
-version: 0.1.1
+version: 0.1.3
 
 environment:
   sdk: '>=2.16.0 <3.0.0'

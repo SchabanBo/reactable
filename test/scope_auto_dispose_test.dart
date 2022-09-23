@@ -60,4 +60,33 @@ void main() {
     );
     expect(tester.takeException(), isA<FlutterError>());
   });
+
+  test('Reactable.listenTo', () {
+    final counter1 = Reactable(0);
+    final counter2 = Reactable(0);
+    final counter3 = Reactable(0);
+    var indexer = 0;
+    void update() {
+      indexer++;
+    }
+
+    Reactable.listenTo([counter1, counter2, counter3], update);
+
+    counter1(1);
+    expect(indexer, 1);
+
+    counter2(1);
+    expect(indexer, 2);
+
+    counter3(1);
+    expect(indexer, 3);
+
+    counter1.dispose();
+    counter2.dispose();
+    counter3.dispose();
+
+    expect(counter1.containsListener(update), false);
+    expect(counter2.containsListener(update), false);
+    expect(counter3.containsListener(update), false);
+  });
 }
