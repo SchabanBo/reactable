@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.1.4] 26-09-2022
+
+- Reset autoDispose to false as default (This will lead to errors with hot reload).
+
 ## [0.1.3] 23-09-2022
 
 - add Reactable.listenTo
