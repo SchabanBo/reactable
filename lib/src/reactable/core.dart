@@ -8,33 +8,27 @@ class ReactableNotifier extends Listenable {
   final bool canBeAutoDisposed;
 
   final _disposers = <VoidCallback>[];
-  bool _isDisposed = false;
   final _listeners = <_Listeners>[];
 
   @override
   void addListener(VoidCallback listener) {
-    assert(_debugAssertNotDisposed());
     _listeners.add(_Listeners(action: listener));
   }
 
   @override
   void removeListener(VoidCallback listener) {
-    assert(_debugAssertNotDisposed());
     _listeners.removeWhere((l) => l.action == listener);
   }
 
   void registerScope(VoidCallback listener) {
-    assert(_debugAssertNotDisposed());
     _listeners.add(_Listeners(action: listener, isFromScope: true));
   }
 
   void addDisposer(VoidCallback listener) {
-    assert(_debugAssertNotDisposed());
     _disposers.add(listener);
   }
 
   void removeDisposer(VoidCallback listener) {
-    assert(_debugAssertNotDisposed());
     _disposers.remove(listener);
   }
 
@@ -47,7 +41,6 @@ class ReactableNotifier extends Listenable {
 
   @protected
   void notifyListeners() {
-    assert(_debugAssertNotDisposed());
     for (var listener in _listeners) {
       listener();
     }
@@ -55,31 +48,17 @@ class ReactableNotifier extends Listenable {
 
   @mustCallSuper
   void dispose() {
-    assert(_debugAssertNotDisposed());
     _listeners.clear();
     for (var disposer in _disposers) {
       disposer();
     }
     _disposers.clear();
-    _isDisposed = true;
   }
 
   void detach(ScopeData data) {
-    assert(_debugAssertNotDisposed());
     removeListener(data.updater);
     if (_listeners.any((e) => e.isFromScope)) return;
     if (data.autoDispose && canBeAutoDisposed) dispose();
-  }
-
-  bool _debugAssertNotDisposed() {
-    assert(() {
-      if (_isDisposed) {
-        throw FlutterError('''A $runtimeType was used after being disposed.\n
-        'Once you have called dispose() on a $runtimeType, it can no longer be used.''');
-      }
-      return true;
-    }());
-    return true;
   }
 }
 

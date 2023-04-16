@@ -168,14 +168,6 @@ void main() {
     expect(tester.takeException(), isA<ScopeError>());
   });
 
-  test('scope disposed throws error', () {
-    expect(() {
-      final counter = 0.asReactable;
-      counter.dispose();
-      counter.refresh();
-    }, throwsA(isA<FlutterError>()));
-  });
-
   testWidgets("scoped value", (tester) async {
     reactableContext.debugReactable = true;
     await tester.pumpWidget(

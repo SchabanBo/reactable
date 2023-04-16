@@ -46,19 +46,6 @@ void main() {
     Navigator.pop(navigatorKey.currentContext!);
     await tester.pumpAndSettle();
     expect(isDisposed, true);
-
-    // Check reactable cannot be used again
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Scope(
-            autoDispose: true,
-            builder: (context) => Text('counter: $counter'),
-          ),
-        ),
-      ),
-    );
-    expect(tester.takeException(), isA<FlutterError>());
   });
 
   test('Reactable.listenTo', () {
