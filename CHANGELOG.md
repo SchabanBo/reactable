@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.1.5] 14-04-2023
+
+- Allow reactable to be used in other widget if a widget dispose it.
+
 ## [0.1.4] 26-09-2022
 
 - Reset autoDispose to false as default (This will lead to errors with hot reload).
