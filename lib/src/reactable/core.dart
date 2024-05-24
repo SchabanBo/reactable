@@ -41,7 +41,7 @@ class ReactableNotifier extends Listenable {
 
   @protected
   void notifyListeners() {
-    for (var listener in _listeners) {
+    for (var listener in _listeners.toList(growable: false)) {
       listener();
     }
   }
@@ -49,7 +49,7 @@ class ReactableNotifier extends Listenable {
   @mustCallSuper
   void dispose() {
     _listeners.clear();
-    for (var disposer in _disposers) {
+    for (var disposer in _disposers.toList(growable: false)) {
       disposer();
     }
     _disposers.clear();
