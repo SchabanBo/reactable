@@ -38,7 +38,7 @@ class MyHomePage extends StatelessWidget {
                 'Reactable Todo',
                 style: Theme.of(context)
                     .textTheme
-                    .headline3!
+                    .displaySmall!
                     .copyWith(fontFamily: 'consolas'),
               ),
             ),
@@ -47,7 +47,7 @@ class MyHomePage extends StatelessWidget {
             Scope(
               builder: (_) => Text(
                 '${controller.todoList.where((p0) => !p0.completed).length} items to do',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             const SizedBox(height: 20),
