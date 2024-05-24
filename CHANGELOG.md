@@ -1,5 +1,9 @@
 # CHANGELOG
 
+ä [0.1.6] 24-05-2024
+
+- Fix error with modification during iteration for lists 
+
 ## [0.1.5] 14-04-2023
 
 - Allow reactable to be used in other widget if a widget dispose it.
