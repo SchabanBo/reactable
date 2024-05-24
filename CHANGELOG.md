@@ -1,6 +1,6 @@
 # CHANGELOG
 
-ä [0.1.6] 24-05-2024
+## [0.1.6] 24-05-2024
 
 - Fix error with modification during iteration for lists 
 
