@@ -35,7 +35,7 @@ class MyHomePage extends StatelessWidget {
             Scope(
               builder: (_) => Text(
                 '$counter',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             const Text('Update counter only when the number is even'),
@@ -44,7 +44,7 @@ class MyHomePage extends StatelessWidget {
               debug: true,
               builder: (_) => Text(
                 '$counter',
-                style: Theme.of(context).textTheme.headline4,
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             Padding(

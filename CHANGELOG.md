@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [0.1.7] 10-07-2024
+
+- Fix error when updating a disposed widget.
+
 ## [0.1.6] 24-05-2024
 
 - Fix error with modification during iteration for lists 

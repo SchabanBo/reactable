@@ -65,20 +65,29 @@ class _ScopeElement extends StatelessElement {
     }
   }
 
+  /// Method to handle debug logging
+  void _logDebug(String message) {
+    if (scope.debug ?? reactableContext.debugReactable) {
+      reactableContext.log('${scope.name} $message');
+    }
+  }
+
   void widgetUpdater() {
-    final where = scope.where?.call() ?? true;
-    final debug = scope.debug ?? reactableContext.debugReactable;
-    if (_isDisposed || dirty || !where) {
-      if (debug) {
-        reactableContext.log(
-          '${scope.name} will not be updated, condition is false',
-        );
-      }
+    // Check if widget is disposed or not mounted, and log if necessary
+    if (_isDisposed || !mounted) return;
+
+    // Evaluate the condition for updating the widget
+    final shouldUpdate = scope.where?.call() ?? true;
+    // Check if widget should not be updated due to being dirty or condition being false
+    if (dirty || !shouldUpdate) {
+      _logDebug('will not be updated, condition is false or widget is dirty');
       return;
     }
-    if (debug) {
-      reactableContext.log('${scope.name} is updating');
-    }
+
+    // Log that the widget is updating
+    _logDebug('is updating');
+
+    // Trigger widget update
     markNeedsBuild();
   }
 
